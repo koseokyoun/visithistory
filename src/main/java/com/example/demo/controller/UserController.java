@@ -19,18 +19,6 @@ public class UserController {
         return "login";
     }
 
-    @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password, Model model, HttpSession session) {
-        User user = userService.authenticate(username, password);
-        if (user != null) {
-            session.setAttribute("loginUser", user);
-            return "redirect:/";
-        } else {
-            model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-            return "login";
-        }
-    }
-
     @GetMapping("/signup")
     public String registerForm() {
         return "Signup";

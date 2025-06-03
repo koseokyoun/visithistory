@@ -40,16 +40,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-			<version>3.3.1</version> <!-- 또는 최신 버전 -->
-		</dependency>
 		<!-- MyBatis 의존성 추가 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.2</version>
+			<version>3.0.4</version>
 		</dependency>
 
 		<!-- 비밀번호 암호화를 위한 BCrypt -->

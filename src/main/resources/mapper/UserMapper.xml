@@ -6,21 +6,21 @@
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
     <!-- username으로 User 조회 -->
-    <select id="findByUsername" parameterType="string" resultType="com.example.domain.User">
+    <select id="findByUsername" parameterType="string" resultType="com.example.demo.model.User">
         SELECT id, username
-        FROM user
+        FROM users
         WHERE username = #{username}
     </select>
 
     <!-- username 존재 여부 확인 -->
     <select id="existsByUsername" parameterType="string" resultType="boolean">
         SELECT COUNT(*) > 0
-        FROM user
+        FROM users
         WHERE username = #{username}
     </select>
 
-    <insert id="insertUser" parameterType="com.example.domain.User">
-        INSERT INTO user (username, password)
+    <insert id="insertUser" parameterType="com.example.demo.model.User">
+        INSERT INTO users (username, password)
         VALUES (#{username}, #{password})
     </insert>
 
