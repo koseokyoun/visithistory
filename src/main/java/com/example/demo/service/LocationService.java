@@ -1,24 +1,35 @@
 package com.example.demo.service;
 
+import com.example.demo.mapper.LocationMapper;
 import com.example.demo.model.Location;
-import com.example.demo.repository.LocationRepository;
 import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LocationService {
-    private final LocationRepository repository;
 
-    public LocationService(LocationRepository repository) {
-        this.repository = repository;
-    }
+    private final LocationMapper locationMapper;
 
     public List<Location> getAllLocations() {
-        return repository.findAll();
+        return locationMapper.findAll();
     }
 
-    public Location saveLocation(Location location) {
-        return repository.save(location);
+    public void saveLocation(Location location) {
+        locationMapper.insert(location);
+    }
+
+    public Location getLocationById(Long id) {
+        return locationMapper.findById(id);
+    }
+
+    public void updateLocation(Location location) {
+        locationMapper.update(location);
+    }
+
+    public void deleteLocation(Long id) {
+        locationMapper.delete(id);
     }
 }
