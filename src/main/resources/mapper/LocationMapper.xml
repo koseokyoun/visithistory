@@ -10,26 +10,41 @@
         <result property="address" column="address"/>
         <result property="latitude" column="latitude"/>
         <result property="longitude" column="longitude"/>
-        <result property="imageUrl" column="image_url"/>
         <result property="visitedDate" column="visited_date"/>
         <result property="memo" column="memo"/>
+        <!-- images 리스트 매핑 (LocationImage와 조인) -->
+        <collection property="images" ofType="com.example.demo.model.LocationImage">
+            <id property="id" column="image_id"/>
+            <result property="locationId" column="location_id"/>
+            <result property="imageUrl" column="image_url"/>
+        </collection>
     </resultMap>
 
     <select id="findAll" resultMap="locationResultMap">
-        SELECT * FROM locations
+        SELECT
+            l.id, l.name, l.address, l.latitude, l.longitude, l.memo, l.visited_date,
+            li.id AS image_id, li.location_id, li.image_url
+        FROM location l
+        LEFT JOIN location_image li ON l.id = li.location_id
+        ORDER BY l.id DESC, li.id
     </select>
 
     <select id="findById" resultMap="locationResultMap" parameterType="long">
-        SELECT * FROM locations WHERE id = #{id}
+        SELECT * FROM location WHERE id = #{id}
     </select>
 
-    <insert id="insert" parameterType="Location">
-        INSERT INTO locations (name, address, latitude, longitude, image_url, visited_date, memo)
-        VALUES (#{name}, #{address}, #{latitude}, #{longitude}, #{imageUrl}, #{visitedDate}, #{memo})
+    <insert id="insert" parameterType="Location" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO location (name, address, latitude, longitude, visited_date, memo)
+        VALUES (#{name}, #{address}, #{latitude}, #{longitude}, #{visitedDate}, #{memo})
+    </insert>
+
+    <insert id="insertImage" parameterType="LocationImage">
+        INSERT INTO location_image (location_id, image_url)
+        VALUES (#{locationId}, #{imageUrl})
     </insert>
 
     <update id="update" parameterType="Location">
-        UPDATE locations
+        UPDATE location
         SET name = #{name},
         address = #{address},
         latitude = #{latitude},
@@ -41,7 +56,7 @@
     </update>
 
     <delete id="delete" parameterType="long">
-        DELETE FROM locations WHERE id = #{id}
+        DELETE FROM location WHERE id = #{id}
     </delete>
 
 </mapper>

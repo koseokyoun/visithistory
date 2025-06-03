@@ -1,20 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>회원가입</title>
+  <link rel="stylesheet" type="text/css" href="/css/signup.css">
+  <script src="/js/signup.js"></script>
+  <!-- 카카오 주소 API -->
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body>
-<h1>회원가입</h1>
-<form th:action="@{/signup}" method="post">
-  <label>아이디: <input type="text" name="username" required></label><br>
-  <label>비밀번호: <input type="password" name="password" required></label><br>
-  <label>이메일: <input type="email" name="email"></label><br>
-  <label>핸드폰번호: <input type="text" name="phone"></label><br>
-  <label>주소: <input type="text" name="address"></label><br>
-  <label>추천인: <input type="text" name="recommender"></label><br>
-  <button type="submit">회원가입</button>
-</form>
-<p th:if="${error}" th:text="${error}" style="color:red;"></p>
-<a th:href="@{/login}">로그인으로 돌아가기</a>
+  <div class="signup-container">
+    <h1>회원가입</h1>
+    <form th:action="@{/signup}" method="post">
+      <label for="username">아이디</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="username" name="username" required placeholder="아이디를 입력하세요" style="flex:1;">
+        <button type="button" id="check-username-btn">중복확인</button>
+      </div>
+      <span id="username-check-result"></span>
+
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" required placeholder="비밀번호를 입력하세요">
+
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email" placeholder="이메일을 입력하세요">
+
+      <label for="phone">핸드폰번호</label>
+      <input type="text" id="phone" name="phone" placeholder="핸드폰번호를 입력하세요">
+
+      <label for="address">주소</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="text" id="address" name="address" placeholder="주소를 검색하세요" readonly style="flex:1;">
+        <button type="button" onclick="execDaumPostcode()" style="min-width:90px;">주소검색</button>
+      </div>
+      <label for="addressDetail">상세주소</label>
+      <input type="text" id="addressDetail" name="addressDetail" placeholder="상세주소를 입력하세요 (선택)">
+
+      <label for="recommender">추천인</label>
+      <input type="text" id="recommender" name="recommender" placeholder="추천인을 입력하세요">
+
+      <div th:if="${error}" class="error" th:text="${error}"></div>
+      <button type="submit">회원가입</button>
+    </form>
+    <a th:href="@{/login}" class="link">로그인으로 돌아가기</a>
+  </div>
 </body>
 </html>

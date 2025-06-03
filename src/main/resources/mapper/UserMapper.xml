@@ -7,7 +7,7 @@
 
     <!-- username으로 User 조회 -->
     <select id="findByUsername" parameterType="string" resultType="com.example.demo.model.User">
-        SELECT id, username
+        SELECT id, username, password, email, phone, address, recommender
         FROM users
         WHERE username = #{username}
     </select>
@@ -20,8 +20,8 @@
     </select>
 
     <insert id="insertUser" parameterType="com.example.demo.model.User">
-        INSERT INTO users (username, password)
-        VALUES (#{username}, #{password})
+        INSERT INTO users (username, password, email, phone, address, recommender)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{address}, #{recommender})
     </insert>
 
 </mapper>

@@ -1,183 +1,117 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>방문한 장소 지도</title>
-    <style>
-        #map { width: 100%; height: 400px; margin-bottom: 20px; }
-        .location { border: 1px solid #ddd; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-        .location img { max-width: 100%; height: auto; border-radius: 10px; }
-    </style>
-    <!-- ✅ Kakao Maps SDK -->
+    <!-- 카카오맵 SDK -->
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=aa7e1d44f837cbfe9cd3388f9fdfd4bc&libraries=services"></script>
+    <link rel="stylesheet" type="text/css" href="/css/location.css">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.visitedLocations = [[${locations}]];
+        /*]]>*/
+    </script>
+    <script src="/js/location.js"></script>
 </head>
 <body>
-<h1>📍 내가 다녀온 장소들</h1>
-
-<!-- ✅ 지도 영역 추가 -->
-<div id="map"></div>
-
-<!-- ✅ 장소 목록 -->
-<div id="locations" th:if="${locations != null}">
-    <div th:each="loc : ${locations}" class="location">
-        <h2 th:text="${loc.name}">장소 이름</h2>
-        <p><strong>주소:</strong> <span th:text="${loc.address}">주소</span></p>
-        <p><strong>방문일:</strong> <span th:text="${loc.visitedDate}">방문일</span></p>
-        <p><strong>메모:</strong> <span th:text="${loc.memo}">메모</span></p>
-        <img th:if="${loc.imageUrl != null}" th:src="${loc.imageUrl}" th:alt="${loc.name}" />
+    <!-- 헤더 -->
+    <div class="header">
+        <div class="logo">VISIT HISTORY</div>
+        <div class="header-actions">
+            <span th:text="'환영합니다, ' + ${#authentication.name} + '님!'">환영합니다!</span>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="logout-link">
+                    <span class="logout-icon">🚪</span> 로그아웃
+                </button>
+            </form>
+        </div>
     </div>
-</div>
-<div th:if="${locations == null or #lists.isEmpty(locations)}">
-    <p>등록된 장소가 없습니다.</p>
-</div>
 
-<!-- 팝업창 HTML -->
-<div id="form-popup" style="display:none;">
-    <div class="popup-content">
-        <button class="close-btn" onclick="hideForm()">✖</button>
-        <h3>장소 입력</h3>
-        <form id="location-form" th:action="@{/locations}" method="post">
-            <input type="hidden" name="latitude" th:value="${location?.latitude}" />
-            <input type="hidden" name="longitude" th:value="${location?.longitude}" />
-            <label>장소 이름:<br><input type="text" name="name" required /></label><br>
-            <label>주소:<br><input type="text" name="address" required /></label><br>
-            <label>방문일:<br><input type="date" name="visitedDate" required /></label><br>
-            <label>메모:<br><textarea name="memo" rows="3"></textarea></label><br>
-            <label>이미지 URL:<br><input type="text" name="imageUrl" /></label><br><br>
-            <button type="submit">저장</button>
-        </form>
+    <!-- 레이아웃 -->
+    <div class="container">
+        <!-- 왼쪽 메뉴 -->
+        <aside class="sidebar">
+            <nav>
+                <a th:href="@{/locations}" class="active">메인 페이지???</a>
+                <a href="#" onclick="showForm();return false;">장소 추가</a>
+                <!-- 필요시 더 메뉴 추가 가능 -->
+            </nav>
+        </aside>
+        <!-- 메인 콘텐츠 -->
+        <main class="main-content">
+            <h1>📍 내가 다녀온 장소들</h1>
+            <!-- ✅ 지도 영역 추가 -->
+            <div id="map"></div>
+
+            <!-- ✅ 장소 목록 -->
+            <div id="locations" th:if="${locations != null}">
+                <div th:each="loc : ${locations}" class="location flex-row">
+                    <!-- 왼쪽: 정보 -->
+                    <div class="location-info">
+                        <h2 th:text="${loc.name}">장소 이름</h2>
+                        <p><strong>주소:</strong> <span th:text="${loc.address}">주소</span></p>
+                        <p><strong>방문일:</strong> <span th:text="${loc.visitedDate}">방문일</span></p>
+                        <p><strong>메모:</strong> <span th:text="${loc.memo}">메모</span></p>
+                    </div>
+                    <!-- 오른쪽: 이미지 갤러리 -->
+                    <div class="location-image-area" th:if="${not #lists.isEmpty(loc.images)}">
+                        <!-- 메인 이미지 -->
+                        <img th:src="@{${loc.images[0].imageUrl}}"
+                             th:alt="${loc.name}"
+                             class="location-main-image"
+                             th:id="'main-image-' + ${loc.id}" />
+
+                        <!-- 썸네일 리스트 -->
+                        <div class="location-thumbnails">
+                            <th:block th:each="img, iterStat : ${loc.images}">
+                                <img th:src="@{${img.imageUrl}}"
+                                     th:alt="${loc.name}"
+                                     class="location-thumb-image"
+                                     th:classappend="${iterStat.index == 0} ? 'active' : ''"
+                                     th:attr="data-loc-id=${loc.id},data-img-url=${img.imageUrl}"
+                                     onclick="onThumbClick(this)" />
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${locations == null or #lists.isEmpty(locations)}">
+                <p>등록된 장소가 없습니다.</p>
+            </div>
+
+        </main>
     </div>
-</div>
 
-<style>
-    #form-popup {
-        position: absolute;
-        z-index: 9999;
-        display: none;
-        background-color: rgba(0,0,0,0.5);
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
-    .popup-content {
-        background: #fff;
-        width: 300px;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 12px;
-        position: relative;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    }
-    .popup-content h3 { margin-top: 0; }
-    .popup-content label { display: block; margin-bottom: 10px; font-size: 14px; }
-    .popup-content input[type="text"],
-    .popup-content input[type="date"],
-    .popup-content textarea {
-        width: 100%;
-        padding: 5px;
-        box-sizing: border-box;
-        margin-top: 4px;
-    }
-    .popup-content button {
-        padding: 8px 14px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-    .popup-content button:hover { background-color: #45a049; }
-    .close-btn {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-    }
-</style>
+    <!-- 팝업창 (장소 추가) -->
+    <div id="form-popup">
+        <div class="popup-content">
+            <button class="close-btn" onclick="hideForm()">✖</button>
+            <h3>장소 입력</h3>
+            <!-- 카카오 장소 검색 영역 -->
+            <div>
+                <label>장소 검색:<br>
+                    <input type="text" id="kakao-search-keyword" placeholder="장소명/주소 입력">
+                    <button type="button" onclick="searchKakaoPlace()">검색</button>
+                </label>
+            </div>
+            <!-- 검색 결과 리스트 -->
+            <div id="kakao-search-results" style="max-height:180px;overflow-y:auto;margin-bottom:12px;"></div>
+            <form id="location-form" th:action="@{/api/locations}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="latitude" id="latitude" />
+                <input type="hidden" name="longitude" id="longitude" />
+                <label>장소 이름:<br><input type="text" name="name" id="place-name" readonly required /></label>
+                <label>주소:<br><input type="text" name="address" id="place-address" readonly required /></label>
+                <label>방문일:<br><input type="date" name="visitedDate" required /></label>
+                <label>메모:<br><textarea name="memo" rows="3"></textarea></label>
+                <label>이미지 업로드:<br><input type="file" name="imageFiles" multiple /></label>
+                <button type="submit">저장</button>
+            </form>
+        </div>
+    </div>
 
-<script>
-    const mapContainer = document.getElementById('map');
-    const mapOption = {
-        center: new kakao.maps.LatLng(37.5665, 126.9780), // 서울 중심
-        level: 3
-    };
-    const map = new kakao.maps.Map(mapContainer, mapOption);
-    const places = new kakao.maps.services.Places();
-
-    kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-        const latlng = mouseEvent.latLng;
-        const lat = latlng.getLat();
-        const lng = latlng.getLng();
-
-        const coord = new kakao.maps.LatLng(lat, lng);
-        searchDetailAddressFromCoords(coord);
-        searchNearbyPlace(coord);
-
-        document.querySelector('input[name="latitude"]').value = lat;
-        document.querySelector('input[name="longitude"]').value = lng;
-
-        showForm();
-    });
-
-    function searchDetailAddressFromCoords(coords) {
-        const geocoder = new kakao.maps.services.Geocoder();
-        geocoder.coord2Address(coords.getLng(), coords.getLat(), function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                const address = result[0].road_address?.address_name || result[0].address.address_name;
-                document.querySelector('input[name="address"]').value = address;
-            } else {
-                console.warn("정확한 주소를 찾을 수 없습니다.");
-            }
-        });
-    }
-
-    function searchNearbyPlace(coords) {
-        const options = {
-            location: coords,
-            radius: 50
-        };
-
-        places.keywordSearch('', function(result, status) {
-            if (status === kakao.maps.services.Status.OK && result.length > 0) {
-                document.querySelector('input[name="name"]').value = result[0].place_name;
-            } else {
-                console.warn("장소명을 찾을 수 없습니다.");
-            }
-        }, options);
-    }
-
-    function showForm() {
-        document.getElementById('form-popup').style.display = 'block';
-    }
-
-    function hideForm() {
-        document.getElementById('form-popup').style.display = 'none';
-    }
-
-    document.getElementById('location-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const json = {};
-        formData.forEach((v, k) => json[k] = v);
-
-        fetch('/locations', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(json)
-        }).then(res => {
-            if (res.ok) {
-                alert('저장되었습니다!');
-                hideForm();
-                location.reload();
-            } else {
-                alert('저장 실패');
-            }
-        });
-    });
-</script>
 </body>
 </html>

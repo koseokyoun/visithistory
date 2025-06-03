@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,9 +33,10 @@ public class LocationController {
 
     // REST API - 저장
     @ResponseBody
-    @PostMapping("/api/locations")
-    public void saveLocation(@RequestBody Location location) {
-        locationService.saveLocation(location);
+    @PostMapping(value = "/api/locations", consumes = {"multipart/form-data"})
+    public void saveLocationWithFiles(@ModelAttribute Location location,
+                                      @RequestParam("imageFiles") List<MultipartFile> imageFiles) {
+        locationService.saveLocationWithFiles(location, imageFiles);
     }
 
     // REST API - 단건 조회

@@ -2,11 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
@@ -24,6 +26,12 @@ public class UserController {
         return "Signup";
     }
 
+    @GetMapping("/api/check-username")
+    @ResponseBody
+    public boolean checkUsernameDuplicate(@RequestParam String username) {
+        return userService.isUsernameDuplicated(username);
+    }
+
     @PostMapping("/signup")
     public String register(User user, Model model) {
         if (userService.isUsernameDuplicated(user.getUsername())) {
@@ -33,11 +41,5 @@ public class UserController {
 
         userService.registerUser(user);
         return "redirect:/login";
-    }
-
-    // 로그인 성공 시 이동할 페이지
-    @GetMapping("/home")
-    public String home() {
-        return "Home"; // 간단한 환영 페이지
     }
 }
