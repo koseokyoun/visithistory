@@ -1,0 +1,137 @@
+body {
+    background: linear-gradient(120deg, #fbc2eb 0%, #a6c1ee 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup-container {
+    background: #fff;
+    padding: 38px 34px 34px 34px;
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(0,0,0,0.13);
+    width: 380px;
+    text-align: center;
+}
+
+.signup-container h1 {
+    margin-bottom: 1.6rem;
+    color: #3a3a3a;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 6px;
+    margin-top: 18px;
+    font-weight: 500;
+    color: #555;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e0c3fc;
+    border-radius: 10px;
+    font-size: 1rem;
+    margin-bottom: 2px;
+    background: #fafaff;
+    transition: border 0.2s, box-shadow 0.2s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus,
+form input[type="email"]:focus {
+    border: 1.5px solid #a6c1ee;
+    box-shadow: 0 0 0 2px #e0c3fc44;
+    background: #fff;
+}
+
+form input[readonly] {
+    background: #f3f3f3;
+    color: #888;
+}
+
+form .error {
+    color: #e74c3c;
+    font-size: 0.98rem;
+    margin: 10px 0 0 0;
+    text-align: left;
+}
+
+form button,
+form input[type="button"],
+form input[type="submit"] {
+    width: 100%;
+    padding: 13px 0;
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(140,197,252,0.08);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+form button:hover,
+form input[type="button"]:hover,
+form input[type="submit"]:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%);
+    color: #333;
+    box-shadow: 0 4px 16px rgba(140,197,252,0.16);
+}
+
+#check-username-btn,
+form button[type="button"] {
+    width: 120px;
+    margin-top: 0;
+    margin-left: 8px;
+    padding: 12px 0;
+    font-size: 1rem;
+    background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+#check-username-btn:hover,
+form button[type="button"]:hover {
+    background: linear-gradient(90deg, #fbc2eb 0%, #a6c1ee 100%);
+    color: #333;
+}
+
+.signup-container .link {
+    display: block;
+    margin-top: 20px;
+    color: #a6c1ee;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+.signup-container .link:hover {
+    color: #fbc2eb;
+    text-decoration: underline;
+}
+
+#username-check-result {
+    margin-bottom: 0;
+    min-height: 1.2em;
+    text-align: left;
+    padding-left: 2px;
+    font-size: 0.97rem;
+}

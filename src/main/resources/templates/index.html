@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>VISIT HISTORY - 메인</title>
+    <meta http-equiv="refresh" content="3;url=/login">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <script>
+        // JS로도 3초 후 이동 (meta와 중복이지만, JS만 쓰고 싶으면 meta는 빼세요)
+        setTimeout(function() {
+            window.location.href = "/login";
+        }, 3000);
+    </script>
+</head>
+<body>
+    <div class="index-container">
+        <h1>VISIT HISTORY</h1>
+        <div class="loader"></div>
+        <p>로그인 페이지로 이동 중입니다...<br>
+            잠시만 기다려주세요.</p>
+        <a href="/login" class="btn">바로 로그인 페이지로 이동</a>
+    </div>
+</body>
+</html>

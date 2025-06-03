@@ -1,0 +1,99 @@
+body {
+    background: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    background: #fff;
+    padding: 2.8rem 2.2rem 2.2rem 2.2rem;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+    width: 370px; /* 기존 340px → 370px로 넓힘 */
+    max-width: 92vw;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.login-box h1 {
+    margin-bottom: 2rem;
+    color: #444;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.login-box label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    font-size: 1.06rem;
+    margin-left: 2px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.3rem;
+    border: 1.5px solid #e0c3fc;
+    border-radius: 10px;
+    font-size: 1.08rem;
+    transition: border 0.2s, box-shadow 0.2s;
+    background: #fafaff;
+    box-sizing: border-box;
+}
+
+.login-box input:focus {
+    border-color: #8ec5fc;
+    outline: none;
+    box-shadow: 0 0 0 2px #e0c3fc44;
+    background: #fff;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 0.95rem 0;
+    background: linear-gradient(90deg, #8ec5fc 0%, #e0c3fc 100%);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1.15rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(140,197,252,0.08);
+    margin-top: 0.3rem;
+}
+
+.login-box button:hover {
+    background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
+    color: #333;
+    box-shadow: 0 4px 16px rgba(140,197,252,0.16);
+}
+
+.login-box .error {
+    color: #e74c3c;
+    font-size: 0.99rem;
+    margin-bottom: 1rem;
+    margin-top: -0.8rem;
+    text-align: left;
+    padding-left: 2px;
+}
+
+.login-box .link {
+    display: block;
+    margin-top: 1.4rem;
+    color: #8ec5fc;
+    text-decoration: none;
+    font-size: 1.01rem;
+    transition: color 0.2s;
+}
+.login-box .link:hover {
+    text-decoration: underline;
+    color: #e0c3fc;
+}
