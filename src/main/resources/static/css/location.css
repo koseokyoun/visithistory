@@ -159,39 +159,93 @@ body {
     max-width: 440px;
 }
 
+/* ✅ 메인 이미지 */
+.main-image-wrapper {
+    position: relative;
+    text-align: center;
+}
+
 .location-main-image {
-    width: 340px;
-    max-width: 100%;
-    max-height: 260px;
+    width: 100%;
+    max-height: 300px;
     object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.10);
-    margin-bottom: 12px;
-    background: #f8f8f8;
-    transition: box-shadow 0.2s;
+    border-radius: 8px;
+}
+
+.main-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 8px 12px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.main-nav.left {
+    left: 10px;
+}
+
+.main-nav.right {
+    right: 10px;
+}
+
+/* ✅ 썸네일 영역 */
+.thumbnail-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.thumb-nav {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    color: white;
+    font-size: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.thumbnail-viewport {
+    width: 320px; /* 60px * 5 + 4*10px gap = 320px */
+    overflow: hidden;
 }
 
 .location-thumbnails {
     display: flex;
-    gap: 8px;
-    margin-top: 4px;
+    transition: transform 0.3s ease;
 }
 
 .location-thumb-image {
-    width: 64px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    background: #f1f1f1;
-    border: 2px solid transparent;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: border 0.2s, box-shadow 0.2s;
+    opacity: 0.6;
+    transition: opacity 0.2s, transform 0.2s;
 }
-.location-thumb-image.active,
+
+.location-thumb-image:last-child {
+    margin-right: 0;
+}
+
 .location-thumb-image:hover {
-    border: 2px solid #8ec5fc;
-    box-shadow: 0 2px 8px rgba(140,197,252,0.18);
+    opacity: 0.9;
+    transform: scale(1.05);
+}
+
+.location-thumb-image.active {
+    border: 2px solid #007bff;
+    opacity: 1;
 }
 
 

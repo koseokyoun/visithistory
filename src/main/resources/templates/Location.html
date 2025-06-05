@@ -59,21 +59,30 @@
                     <!-- 오른쪽: 이미지 갤러리 -->
                     <div class="location-image-area" th:if="${not #lists.isEmpty(loc.images)}">
                         <!-- 메인 이미지 -->
-                        <img th:src="@{${loc.images[0].imageUrl}}"
-                             th:alt="${loc.name}"
-                             class="location-main-image"
-                             th:id="'main-image-' + ${loc.id}" />
-
-                        <!-- 썸네일 리스트 -->
-                        <div class="location-thumbnails">
-                            <th:block th:each="img, iterStat : ${loc.images}">
-                                <img th:src="@{${img.imageUrl}}"
-                                     th:alt="${loc.name}"
-                                     class="location-thumb-image"
-                                     th:classappend="${iterStat.index == 0} ? 'active' : ''"
-                                     th:attr="data-loc-id=${loc.id},data-img-url=${img.imageUrl}"
-                                     onclick="onThumbClick(this)" />
-                            </th:block>
+                        <div class="main-image-wrapper">
+                            <button class="main-nav left" onclick="changeMainImageByArrow(this, -1)">&lt;</button>
+                            <img th:src="@{${loc.images[0].imageUrl}}"
+                                 th:alt="${loc.name}"
+                                 class="location-main-image"
+                                 th:id="'main-image-' + ${loc.id}"
+                                 th:attr="data-loc-id=${loc.id}"/>
+                            <button class="main-nav right" onclick="changeMainImageByArrow(this, 1)">&gt;</button>
+                        </div>
+                        <!-- 썸네일 -->
+                        <div class="thumbnail-wrapper">
+                            <button class="thumb-nav left" onclick="scrollThumbnails(this, -1)">&lt;</button>
+                            <div class="thumbnail-viewport">
+                                <div class="location-thumbnails" th:id="'thumb-strip-' + ${loc.id}" th:attr="data-loc-id=${loc.id}">
+                                    <th:block th:each="img, iterStat : ${loc.images}">
+                                        <img th:src="@{${img.imageUrl}}"
+                                             class="location-thumb-image"
+                                             th:classappend="${iterStat.index == 0} ? 'active' : ''"
+                                             th:attr="data-loc-id=${loc.id},data-img-url=${img.imageUrl}"
+                                             onclick="onThumbClick(this)" />
+                                    </th:block>
+                                </div>
+                            </div>
+                            <button class="thumb-nav right" onclick="scrollThumbnails(this, 1)">&gt;</button>
                         </div>
                     </div>
                 </div>
