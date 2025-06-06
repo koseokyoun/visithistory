@@ -91,6 +91,13 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.20.65</version> <!-- 최신 버전 확인 가능 -->
+		</dependency>
+
 		<dependency>
 		<groupId>org.projectlombok</groupId>
 		<artifactId>lombok</artifactId>
