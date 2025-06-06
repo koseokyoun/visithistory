@@ -61,7 +61,7 @@
                         <!-- 메인 이미지 -->
                         <div class="main-image-wrapper">
                             <button class="main-nav left" onclick="changeMainImageByArrow(this, -1)">&lt;</button>
-                            <img th:src="@{${loc.images[0].imageUrl}}"
+                            <img th:src="@{${loc.images[0].fullUrl}}"
                                  th:alt="${loc.name}"
                                  class="location-main-image"
                                  th:id="'main-image-' + ${loc.id}"
@@ -74,10 +74,10 @@
                             <div class="thumbnail-viewport">
                                 <div class="location-thumbnails" th:id="'thumb-strip-' + ${loc.id}" th:attr="data-loc-id=${loc.id}">
                                     <th:block th:each="img, iterStat : ${loc.images}">
-                                        <img th:src="@{${img.imageUrl}}"
+                                        <img th:src="@{${img.fullUrl}}"
                                              class="location-thumb-image"
                                              th:classappend="${iterStat.index == 0} ? 'active' : ''"
-                                             th:attr="data-loc-id=${loc.id},data-img-url=${img.imageUrl}"
+                                             th:attr="data-loc-id=${loc.id},data-img-url=${img.fullUrl}"
                                              onclick="onThumbClick(this)" />
                                     </th:block>
                                 </div>

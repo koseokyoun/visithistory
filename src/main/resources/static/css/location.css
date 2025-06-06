@@ -163,6 +163,7 @@ body {
 .main-image-wrapper {
     position: relative;
     text-align: center;
+    padding: 0 40px; /* 좌우 공간 확보 */
 }
 
 .location-main-image {
@@ -187,11 +188,11 @@ body {
 }
 
 .main-nav.left {
-    left: 10px;
+    left: -20px;
 }
 
 .main-nav.right {
-    right: 10px;
+    right: -20px;
 }
 
 /* ✅ 썸네일 영역 */

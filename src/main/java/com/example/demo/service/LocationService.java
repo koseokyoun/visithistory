@@ -20,7 +20,21 @@ public class LocationService {
     private final LocationMapper locationMapper;
 
     public List<Location> getAllLocations() {
-        return locationMapper.findAll();
+        List<Location> locations = locationMapper.findAll();
+
+        // R2 CDN base URL
+        String baseUrl = "https://pub-72e954e75fe24471847f7fb53ff0413c.r2.dev";
+
+        for (Location location : locations) {
+            if (location.getImages() != null) {
+                for (LocationImage image : location.getImages()) {
+                    String rawPath = image.getImageUrl(); // 예: /파일명.jpg
+                    image.setFullUrl(baseUrl + rawPath); // 예: https://.../visithistory/파일명.jpg
+                }
+            }
+        }
+        System.out.println(locations);
+        return locations;
     }
 
     @Transactional

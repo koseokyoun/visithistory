@@ -9,4 +9,5 @@ public class LocationImage {
     private Long id;
     private Long locationId;
     private String imageUrl;
+    private String fullUrl;
 }
