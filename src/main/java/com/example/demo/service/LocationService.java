@@ -69,4 +69,8 @@ public class LocationService {
     public void deleteLocation(Long id) {
         locationMapper.delete(id);
     }
+
+    public void deleteImage(Long id) {
+        locationMapper.deleteImage(id);
+    }
 }

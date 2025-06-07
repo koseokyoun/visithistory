@@ -56,6 +56,7 @@
                         <p><strong>주소:</strong> <span th:text="${loc.address}">주소</span></p>
                         <p><strong>방문일:</strong> <span th:text="${loc.visitedDate}">방문일</span></p>
                         <p><strong>메모:</strong> <span th:text="${loc.memo}">메모</span></p>
+                        <button class="edit-btn" th:attr="data-loc-id=${loc.id}">수정</button>
                         <button class="delete-btn" th:attr="data-loc-id=${loc.id}">삭제</button>
                     </div>
                     <!-- 오른쪽: 이미지 갤러리 -->
@@ -127,6 +128,34 @@
                 <label>메모:<br><textarea name="memo" rows="3"></textarea></label>
                 <label>이미지 업로드:<br><input type="file" name="imageFiles" multiple /></label>
                 <button type="submit">저장</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 팝업창 (장소 수정) -->
+    <div id="edit-popup">
+        <div class="popup-content">
+            <button class="close-btn" onclick="hideEditForm()">✖</button>
+            <h3>장소 수정</h3>
+            <!-- 카카오 장소 검색 영역 -->
+            <div>
+                <label>장소 검색:<br>
+                    <input type="text" id="edit-search-keyword" placeholder="장소명/주소 입력">
+                    <button type="button" onclick="searchKakaoPlace(true)">검색</button>
+                </label>
+            </div>
+            <!-- 검색 결과 리스트 -->
+            <div id="edit-search-results" style="max-height:180px;overflow-y:auto;margin-bottom:12px;"></div>
+            <form id="edit-form">
+                <input type="hidden" name="id" id="edit-id" />
+                <input type="hidden" name="latitude" id="edit-latitude" />
+                <input type="hidden" name="longitude" id="edit-longitude" />
+                <label>장소 이름:<br><input type="text" name="name" id="edit-name" required /></label>
+                <label>주소:<br><input type="text" name="address" id="edit-address" required /></label>
+                <label>방문일:<br><input type="date" name="visitedDate" id="edit-visitedDate" required /></label>
+                <label>메모:<br><textarea name="memo" id="edit-memo" rows="3"></textarea></label>
+                <div id="edit-images" style="margin-bottom:10px;"></div>
+                <button type="submit">수정 저장</button>
             </form>
         </div>
     </div>

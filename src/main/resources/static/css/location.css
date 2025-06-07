@@ -179,6 +179,30 @@ body {
     letter-spacing: 0.02em;
     display: inline-block;
 }
+.edit-btn {
+    background: linear-gradient(90deg, #c6e2ff 0%, #e0f0ff 100%);
+    color: #00558b;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(198, 226, 255, 0.07);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    margin-top: 18px;
+    margin-bottom: 2px;
+    margin-right: 8px;
+    outline: none;
+    display: inline-block;
+    letter-spacing: 0.02em;
+}
+.edit-btn:hover,
+.edit-btn:focus {
+    background: linear-gradient(90deg, #a3d4ff 0%, #c6e2ff 100%);
+    color: #003d66;
+    box-shadow: 0 4px 16px rgba(198, 226, 255, 0.18);
+}
 .delete-btn:hover, .delete-btn:focus {
     background: linear-gradient(90deg, #f77e7e 0%, #fcb6b6 100%);
     color: #fff;
@@ -289,6 +313,21 @@ body {
     align-items: center;
     justify-content: center;
     /* flex 속성은 여기만! */
+}
+#edit-popup {
+    position: fixed;
+    z-index: 9999;
+    display: none;
+    background-color: rgba(40,40,60,0.21);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+}
+#edit-popup.show {
+    display: flex;
 }
 #form-popup.show {
     display: flex; /* JS에서 show 클래스 추가로 보이게 */
@@ -403,6 +442,35 @@ body {
     box-shadow: 0 2px 8px rgba(140,197,252,0.08);
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
+.edit-image-item {
+    position: relative;
+    display: inline-block;
+    margin-right: 6px;
+}
+.edit-image-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+.img-del-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ff6a6a;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .popup-content button[type="button"]:hover,
 .popup-content button[type="submit"]:hover {
     background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
@@ -412,6 +480,15 @@ body {
 
 /* 팝업 내 검색 결과 등 */
 #kakao-search-results {
+    margin-bottom: 12px;
+    max-height: 140px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background: #f6f9ff;
+    font-size: 0.98rem;
+    padding: 0 4px;
+}
+#edit-search-results {
     margin-bottom: 12px;
     max-height: 140px;
     overflow-y: auto;
