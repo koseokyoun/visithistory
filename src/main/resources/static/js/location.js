@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const markerMap = new Map(); // loc.id → { marker, infowindow }
 
+    const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
+
     if (window.visitedLocations && Array.isArray(window.visitedLocations)) {
         addMarkers(window.visitedLocations, map, markerMap);
     }
@@ -17,16 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         const formData = new FormData(e.target);
 
-        const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute('content');
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content');
         if (csrfToken && csrfHeader) {
             formData.append(csrfHeader, csrfToken);
         }
+
+        const loadingBar = document.getElementById('loading-bar-overlay');
+
+        loadingBar.style.display = 'block'; // 로딩바 보이기
 
         fetch('/api/locations', {
             method: 'POST',
             body: formData
         }).then(res => {
+            loadingBar.style.display = 'none'; // 로딩바 숨기기
             if (res.ok) {
                 alert('저장되었습니다!');
                 hideForm();
@@ -34,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 alert('저장 실패');
             }
+        }).catch(() => {
+            loadingBar.style.display = 'none'; // 에러 시에도 숨기기
+            alert('저장 실패');
         });
     });
 
@@ -80,6 +89,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const imageUrl = elem.getAttribute('data-img-url');
         changeMainImage(locId, imageUrl, elem);
 
+        // 모든 InfoWindow 닫기
+        markerMap.forEach(({ infowindow }) => {
+            infowindow.close();
+        });
+
         const markerData = markerMap.get(locId);
         if (markerData) {
             const { marker, infowindow } = markerData;
@@ -87,6 +101,34 @@ document.addEventListener('DOMContentLoaded', function () {
             infowindow.open(map, marker);
         }
     };
+
+    document.addEventListener('click', async function(e) {
+        if (e.target.classList.contains('delete-btn')) {
+            const locId = e.target.getAttribute('data-loc-id');
+            if (!locId) return;
+
+            if (confirm('이 장소를 정말 삭제하시겠습니까?')) {
+                try {
+                    const headers = {};
+                    if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+                    const res = await fetch(`/api/locations/${locId}`, {
+                                        method: 'DELETE',
+                                        headers
+                                    });
+                    if (res.ok) {
+                        alert('삭제되었습니다.')
+                        // 카드 DOM에서 삭제
+                        const card = e.target.closest('.location');
+                        if (card) card.remove();
+                    } else {
+                        alert('삭제에 실패했습니다.');
+                    }
+                } catch (err) {
+                    alert('네트워크 오류로 삭제에 실패했습니다.');
+                }
+            }
+        }
+    });
 });
 
 // 기타 함수 그대로 유지
@@ -182,10 +224,13 @@ function changeMainImageByArrow(buttonElement, direction) {
     const locId = mainImg.getAttribute("data-loc-id");
 
     const thumbStrip = document.getElementById(`thumb-strip-${locId}`);
+    if (!thumbStrip) return;
+
     const thumbs = Array.from(thumbStrip.querySelectorAll(".location-thumb-image"));
     const currentMainUrl = mainImg.src;
 
-    let currentIndex = thumbs.findIndex(img => img.src === currentMainUrl);
+    // src 비교 시 절대경로/상대경로 문제 방지
+    let currentIndex = thumbs.findIndex(img => img.src === currentMainUrl || img.getAttribute('src') === currentMainUrl);
     if (currentIndex === -1) currentIndex = 0;
 
     let newIndex = currentIndex + direction;
@@ -194,7 +239,35 @@ function changeMainImageByArrow(buttonElement, direction) {
 
     const newThumb = thumbs[newIndex];
     onThumbClick(newThumb);
+
+    // 썸네일 자동 스크롤 포커싱
+    const visibleCount = 5; // 한 번에 보이는 썸네일 개수
+    // 실제 썸네일 width+margin-right 값을 구함
+    const thumbStyle = getComputedStyle(newThumb);
+    const thumbWidth = newThumb.offsetWidth + parseInt(thumbStyle.marginRight || 0, 10);
+
+    // thumbIndexes[locId]가 undefined일 때 0으로 초기화
+    if (typeof thumbIndexes[locId] !== 'number') thumbIndexes[locId] = 0;
+
+    // 현재 썸네일 strip의 시작 인덱스
+    let start = thumbIndexes[locId];
+    let end = start + visibleCount - 1;
+
+    // 만약 newIndex가 strip 범위 밖이면 strip 이동
+    if (newIndex < start) {
+        thumbIndexes[locId] = newIndex;
+    } else if (newIndex > end) {
+        thumbIndexes[locId] = newIndex - visibleCount + 1;
+    }
+    // 최대 범위 체크
+    const maxIndex = Math.max(0, thumbs.length - visibleCount);
+    if (thumbIndexes[locId] > maxIndex) thumbIndexes[locId] = maxIndex;
+    if (thumbIndexes[locId] < 0) thumbIndexes[locId] = 0;
+
+    const offset = thumbIndexes[locId] * thumbWidth;
+    thumbStrip.style.transform = `translateX(-${offset}px)`;
 }
+
 
 // ↔ 썸네일 가로 스크롤 버튼
 const thumbIndexes = {}; // 썸네일 위치 기억

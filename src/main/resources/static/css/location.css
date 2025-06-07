@@ -159,6 +159,31 @@ body {
     max-width: 440px;
 }
 
+.delete-btn {
+    background: linear-gradient(90deg, #fcb6b6 0%, #fcdede 100%);
+    color: #c0392b;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(252, 182, 182, 0.07);
+    cursor: pointer;
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    margin-top: 18px;
+    margin-bottom: 2px;
+    margin-left: 0;
+    margin-right: 0;
+    outline: none;
+    letter-spacing: 0.02em;
+    display: inline-block;
+}
+.delete-btn:hover, .delete-btn:focus {
+    background: linear-gradient(90deg, #f77e7e 0%, #fcb6b6 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(252, 182, 182, 0.18);
+}
+
 /* ✅ 메인 이미지 */
 .main-image-wrapper {
     position: relative;
@@ -216,7 +241,7 @@ body {
 }
 
 .thumbnail-viewport {
-    width: 320px; /* 60px * 5 + 4*10px gap = 320px */
+    width: 350px; /* 60px * 5 + 4*10px gap = 320px */
     overflow: hidden;
 }
 
@@ -397,4 +422,44 @@ body {
 .kakao-result-item:hover {
     background: #f3f3f3;
     color: #007bff;
+}
+
+/* 로딩 오버레이: 화면 전체를 흐리게 덮음 */
+#loading-bar-overlay {
+    display: none; /* JS에서 필요시 block으로 변경 */
+    position: fixed;
+    z-index: 10000;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(245, 245, 255, 0.38);
+    backdrop-filter: blur(1.5px);
+    align-items: center;
+    justify-content: center;
+}
+
+/* 중앙에 부드러운 그라데이션 바 */
+#loading-bar {
+    width: 120px;
+    height: 7px;
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(90deg, #e0c3fc 0%, #8ec5fc 100%);
+    box-shadow: 0 2px 14px rgba(140,197,252,0.16);
+    position: relative;
+}
+
+#loading-bar-progress {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, #8ec5fc 0%, #e0c3fc 100%);
+    border-radius: 5px;
+    animation: loading-bar-move 1.2s cubic-bezier(0.4,0,0.2,1) infinite;
+    box-shadow: 0 1.5px 6px rgba(140,197,252,0.13);
+}
+
+@keyframes loading-bar-move {
+    0% { margin-left: -40%; width: 40%; opacity: 0.7;}
+    40% { margin-left: 0; width: 80%; opacity: 1;}
+    80% { margin-left: 60%; width: 40%; opacity: 0.7;}
+    100% { margin-left: 100%; width: 40%; opacity: 0;}
 }

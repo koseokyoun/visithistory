@@ -26,6 +26,7 @@
             li.id AS image_id, li.location_id, li.image_url
         FROM location l
         LEFT JOIN location_image li ON l.id = li.location_id
+        WHERE l.delete_flag = 0 and li.delete_flag = 0
         ORDER BY l.id DESC, li.id
     </select>
 
@@ -38,25 +39,28 @@
         VALUES (#{name}, #{address}, #{latitude}, #{longitude}, #{visitedDate}, #{memo})
     </insert>
 
-    <insert id="insertImage" parameterType="LocationImage">
-        INSERT INTO location_image (location_id, image_url)
-        VALUES (#{locationId}, #{imageUrl})
-    </insert>
-
     <update id="update" parameterType="Location">
         UPDATE location
         SET name = #{name},
         address = #{address},
         latitude = #{latitude},
         longitude = #{longitude},
-        image_url = #{imageUrl},
         visited_date = #{visitedDate},
         memo = #{memo}
         WHERE id = #{id}
     </update>
 
-    <delete id="delete" parameterType="long">
-        DELETE FROM location WHERE id = #{id}
-    </delete>
+    <update id="delete" parameterType="long">
+        UPDATE location SET delete_flag = 1 WHERE id = #{id}
+    </update>
+
+    <insert id="insertImage" parameterType="LocationImage">
+        INSERT INTO location_image (location_id, image_url)
+        VALUES (#{locationId}, #{imageUrl})
+    </insert>
+
+    <update id="deleteImage" parameterType="long">
+        UPDATE location_image SET delete_flag = 1 WHERE id = #{id}
+    </update>
 
 </mapper>
