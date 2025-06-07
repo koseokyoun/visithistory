@@ -465,6 +465,11 @@ body {
     height: 20px;
     font-size: 0.8rem;
     cursor: pointer;
+    padding: 0;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .popup-content button[type="button"]:hover,
 .popup-content button[type="submit"]:hover {
@@ -475,6 +480,15 @@ body {
 
 /* 팝업 내 검색 결과 등 */
 #kakao-search-results {
+    margin-bottom: 12px;
+    max-height: 140px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background: #f6f9ff;
+    font-size: 0.98rem;
+    padding: 0 4px;
+}
+#edit-search-results {
     margin-bottom: 12px;
     max-height: 140px;
     overflow-y: auto;
