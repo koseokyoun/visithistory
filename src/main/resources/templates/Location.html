@@ -137,6 +137,15 @@
         <div class="popup-content">
             <button class="close-btn" onclick="hideEditForm()">✖</button>
             <h3>장소 수정</h3>
+            <!-- 카카오 장소 검색 영역 -->
+            <div>
+                <label>장소 검색:<br>
+                    <input type="text" id="edit-search-keyword" placeholder="장소명/주소 입력">
+                    <button type="button" onclick="searchKakaoPlace(true)">검색</button>
+                </label>
+            </div>
+            <!-- 검색 결과 리스트 -->
+            <div id="edit-search-results" style="max-height:180px;overflow-y:auto;margin-bottom:12px;"></div>
             <form id="edit-form">
                 <input type="hidden" name="id" id="edit-id" />
                 <input type="hidden" name="latitude" id="edit-latitude" />

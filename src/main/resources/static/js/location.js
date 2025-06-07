@@ -237,8 +237,8 @@ function hideEditForm() {
     document.getElementById('edit-popup').classList.remove('show');
 }
 
-function searchKakaoPlace() {
-    const keyword = document.getElementById('kakao-search-keyword').value.trim();
+function searchKakaoPlace(isEdit = false) {
+    const keyword = document.getElementById(isEdit ? 'edit-search-keyword' : 'kakao-search-keyword').value.trim();
     if (!keyword) {
         alert('검색어를 입력하세요.');
         return;
@@ -246,7 +246,7 @@ function searchKakaoPlace() {
 
     const ps = new kakao.maps.services.Places();
     ps.keywordSearch(keyword, function (data, status) {
-        const resultsDiv = document.getElementById('kakao-search-results');
+        const resultsDiv = document.getElementById(isEdit ? 'edit-search-results' : 'kakao-search-results');
         resultsDiv.innerHTML = '';
         if (status === kakao.maps.services.Status.OK && data.length > 0) {
             data.forEach(place => {
@@ -256,10 +256,10 @@ function searchKakaoPlace() {
                 div.style.cursor = 'pointer';
                 div.style.padding = '6px 0';
                 div.onclick = function () {
-                    document.getElementById('place-name').value = place.place_name;
-                    document.getElementById('place-address').value = place.road_address_name || place.address_name;
-                    document.getElementById('latitude').value = place.y;
-                    document.getElementById('longitude').value = place.x;
+                    document.getElementById(isEdit ? 'edit-name' : 'place-name').value = place.place_name;
+                    document.getElementById(isEdit ? 'edit-address' : 'place-address').value = place.road_address_name || place.address_name;
+                    document.getElementById(isEdit ? 'edit-latitude' : 'latitude').value = place.y;
+                    document.getElementById(isEdit ? 'edit-longitude' : 'longitude').value = place.x;
                     resultsDiv.innerHTML = '';
                 };
                 resultsDiv.appendChild(div);
