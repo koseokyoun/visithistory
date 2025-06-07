@@ -463,3 +463,33 @@ body {
     80% { margin-left: 60%; width: 40%; opacity: 0.7;}
     100% { margin-left: 100%; width: 40%; opacity: 0;}
 }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 0;
+    }
+    .sidebar nav {
+        flex-direction: row;
+        justify-content: center;
+        gap: 12px;
+    }
+    .main-content {
+        padding: 20px;
+    }
+    .location.flex-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+        padding: 24px;
+    }
+    .location-image-area {
+        align-items: center;
+    }
+    #map { height: 300px; }
+}

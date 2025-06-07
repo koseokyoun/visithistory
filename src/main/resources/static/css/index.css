@@ -56,3 +56,19 @@ body {
     0% { transform: rotate(0deg);}
     100% { transform: rotate(360deg);}
 }
+
+@media (max-width: 480px) {
+    .index-container {
+        width: 90%;
+        padding: 2rem 1rem;
+    }
+    .index-container h1 {
+        font-size: 1.6rem;
+    }
+    .index-container p {
+        font-size: 1rem;
+    }
+    .index-container .btn {
+        font-size: 1rem;
+    }
+}
