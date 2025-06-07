@@ -127,7 +127,58 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('네트워크 오류로 삭제에 실패했습니다.');
                 }
             }
+        } else if (e.target.classList.contains('edit-btn')) {
+            const locId = e.target.getAttribute('data-loc-id');
+            const loc = window.visitedLocations.find(l => l.id == locId);
+            if (loc) showEditForm(loc);
+        } else if (e.target.classList.contains('img-del-btn')) {
+            const imgId = e.target.getAttribute('data-img-id');
+            if (!imgId) return;
+            if (confirm('이미지를 삭제하시겠습니까?')) {
+                try {
+                    const headers = {};
+                    if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+                    const res = await fetch(`/api/location-images/${imgId}`, { method: 'DELETE', headers });
+                    if (res.ok) {
+                        alert('삭제되었습니다.');
+                        const item = e.target.closest('.edit-image-item');
+                        if (item) item.remove();
+                    } else {
+                        alert('삭제 실패');
+                    }
+                } catch (err) {
+                    alert('네트워크 오류로 삭제에 실패했습니다.');
+                }
+            }
         }
+    });
+
+    document.getElementById('edit-form').addEventListener('submit', function(e){
+        e.preventDefault();
+        const locId = document.getElementById('edit-id').value;
+        const data = {
+            name: document.getElementById('edit-name').value,
+            address: document.getElementById('edit-address').value,
+            visitedDate: document.getElementById('edit-visitedDate').value,
+            memo: document.getElementById('edit-memo').value,
+            latitude: document.getElementById('edit-latitude').value,
+            longitude: document.getElementById('edit-longitude').value
+        };
+        const headers = { 'Content-Type': 'application/json' };
+        if (csrfToken && csrfHeader) headers[csrfHeader] = csrfToken;
+        fetch(`/api/locations/${locId}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(data)
+        }).then(res => {
+            if(res.ok){
+                alert('수정되었습니다.');
+                hideEditForm();
+                location.reload();
+            } else {
+                alert('수정 실패');
+            }
+        }).catch(()=>alert('수정 실패'));
     });
 });
 
@@ -157,6 +208,33 @@ function showForm() {
 
 function hideForm() {
     document.getElementById('form-popup').classList.remove('show');
+}
+
+function showEditForm(loc) {
+    document.getElementById('edit-id').value = loc.id;
+    document.getElementById('edit-name').value = loc.name || '';
+    document.getElementById('edit-address').value = loc.address || '';
+    document.getElementById('edit-visitedDate').value = loc.visitedDate || '';
+    document.getElementById('edit-memo').value = loc.memo || '';
+    document.getElementById('edit-latitude').value = loc.latitude || '';
+    document.getElementById('edit-longitude').value = loc.longitude || '';
+
+    const imagesDiv = document.getElementById('edit-images');
+    imagesDiv.innerHTML = '';
+    if (Array.isArray(loc.images)) {
+        loc.images.forEach(img => {
+            const wrap = document.createElement('div');
+            wrap.className = 'edit-image-item';
+            wrap.innerHTML = `<img src="${img.fullUrl}" alt=""/><button type="button" class="img-del-btn" data-img-id="${img.id}">✖</button>`;
+            imagesDiv.appendChild(wrap);
+        });
+    }
+
+    document.getElementById('edit-popup').classList.add('show');
+}
+
+function hideEditForm() {
+    document.getElementById('edit-popup').classList.remove('show');
 }
 
 function searchKakaoPlace() {

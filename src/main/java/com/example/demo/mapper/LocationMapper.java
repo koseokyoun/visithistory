@@ -14,4 +14,5 @@ public interface LocationMapper {
     void insertImage(LocationImage image); // 이미지 저장
     void update(Location location);
     void delete(Long id);
+    void deleteImage(Long id); // 이미지 delete_flag 업데이트
 }
