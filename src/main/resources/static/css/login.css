@@ -97,3 +97,13 @@ body {
     text-decoration: underline;
     color: #e0c3fc;
 }
+
+@media (max-width: 480px) {
+    .login-box {
+        width: 90%;
+        padding: 2rem 1rem;
+    }
+    .login-box h1 {
+        font-size: 1.6rem;
+    }
+}
