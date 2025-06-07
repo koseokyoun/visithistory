@@ -60,4 +60,11 @@ public class LocationController {
     public void deleteLocation(@PathVariable Long id) {
         locationService.deleteLocation(id);
     }
+
+    // REST API - 이미지 삭제(delete_flag 업데이트)
+    @ResponseBody
+    @DeleteMapping("/api/location-images/{id}")
+    public void deleteLocationImage(@PathVariable Long id) {
+        locationService.deleteImage(id);
+    }
 }
