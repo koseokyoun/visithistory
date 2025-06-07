@@ -57,12 +57,12 @@ body {
 
 .login-box button {
     width: 100%;
-    padding: 0.95rem 0;
+    padding: 0.8rem 0;
     background: linear-gradient(90deg, #8ec5fc 0%, #e0c3fc 100%);
     border: none;
     border-radius: 10px;
     color: #fff;
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
@@ -96,4 +96,14 @@ body {
 .login-box .link:hover {
     text-decoration: underline;
     color: #e0c3fc;
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        width: 90%;
+        padding: 2rem 1rem;
+    }
+    .login-box h1 {
+        font-size: 1.6rem;
+    }
 }

@@ -72,13 +72,13 @@ form button,
 form input[type="button"],
 form input[type="submit"] {
     width: 100%;
-    padding: 13px 0;
+    padding: 11px 0;
     margin-top: 20px;
     border: none;
     border-radius: 10px;
     background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(140,197,252,0.08);
@@ -95,11 +95,11 @@ form input[type="submit"]:hover {
 
 #check-username-btn,
 form button[type="button"] {
-    width: 120px;
+    width: 110px;
     margin-top: 0;
     margin-left: 8px;
-    padding: 12px 0;
-    font-size: 1rem;
+    padding: 10px 0;
+    font-size: 0.95rem;
     background: linear-gradient(90deg, #a6c1ee 0%, #fbc2eb 100%);
     color: #fff;
     border: none;
@@ -134,4 +134,14 @@ form button[type="button"]:hover {
     text-align: left;
     padding-left: 2px;
     font-size: 0.97rem;
+}
+
+@media (max-width: 480px) {
+    .signup-container {
+        width: 90%;
+        padding: 2rem 1rem;
+    }
+    .signup-container h1 {
+        font-size: 1.6rem;
+    }
 }
